@@ -4,3 +4,11 @@
 
 ## 설치
 
+### 윈도우
+https://nightly.link/MisileLab/doxa-sherry-alarm-lol/workflows/build-windows/main/build-artifacts.zip
+
+### MacOS
+https://nightly.link/MisileLab/doxa-sherry-alarm-lol/workflows/build-macos/main/build-artifacts.zip
+
+### 리눅스
+https://nightly.link/MisileLab/doxa-sherry-alarm-lol/workflows/build/main/build-artifacts.zip
