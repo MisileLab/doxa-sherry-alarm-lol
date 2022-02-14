@@ -115,7 +115,7 @@ func main() {
 		nowtime := time.Now()
 		println("현재 시간: " + nowtime.Format("15:04:05"))
 		if sleeptime.check_time(nowtime) {
-			err := beeep.Notify("Good Night", fmt.Sprintf("잘 자요.", strconv.Itoa(nowtime.Hour()), strconv.Itoa(nowtime.Minute()), strconv.Itoa(nowtime.Second())), "assets/doxa.png")
+			err := beeep.Notify("Good Night", fmt.Sprint("잘 자요.", strconv.Itoa(nowtime.Hour()), strconv.Itoa(nowtime.Minute()), strconv.Itoa(nowtime.Second())), "assets/doxa.png")
 			if err != nil {
 				panic(err)
 			}
