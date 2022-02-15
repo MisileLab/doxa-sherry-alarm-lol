@@ -124,7 +124,7 @@ func main() {
 			fmt.Println("get up")
 			/* 
 			speaker.Play(gooddaystreamer) 
-			err := beeep.Notify("Wake up!", fmt.Sprintf("일어나!", strconv.Itoa(nowtime.Hour()), strconv.Itoa(nowtime.Minute()), strconv.Itoa(nowtime.Second())), "assets/sherry.png")
+			err := beeep.Notify("Wake up!", fmt.Sprint("일어나!", strconv.Itoa(nowtime.Hour()), strconv.Itoa(nowtime.Minute()), strconv.Itoa(nowtime.Second())), "assets/sherry.png")
 			if err != nil {
 				panic(err)
 			}
