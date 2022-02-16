@@ -12,7 +12,7 @@ require (
 	github.com/godbus/dbus/v5 v5.0.6 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20220104163920-15ed2e8cf2bd // indirect
 	github.com/gopherjs/gopherwasm v1.1.0 // indirect
-	github.com/hajimehoshi/go-mp3 v0.3.0 // indirect
+	github.com/hajimehoshi/go-mp3 v0.3.2
 	github.com/hajimehoshi/oto v0.7.1 // indirect
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d // indirect
 	github.com/pkg/errors v0.9.1 // indirect

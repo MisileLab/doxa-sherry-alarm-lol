@@ -6,10 +6,11 @@ import (
 	"os"
 	"log"
 	"github.com/faiface/beep/mp3"
+	gomp3 "github.com/hajimehoshi/go-mp3" 
 	"github.com/faiface/beep/speaker"
+	"github.com/faiface/beep"
 	"encoding/json"
 	"github.com/gen2brain/beeep"
-	"strconv"
 )
 
 type timestruct struct {
@@ -32,6 +33,7 @@ func (t timestruct) check_time(time time.Time) bool {
 }
 
 func main() {
+	const sampleSize = 4
 	reset := os.Getenv("reset")
 	if reset == "true" {
 		os.Remove("config.json")
@@ -49,9 +51,11 @@ func main() {
 	var sleephour int
 	var sleepmin int
 	var sleepam bool
+	var sleeprepeat int
 	var dayhour int
 	var daymin int
 	var dayam bool
+	var dayrepeat int
 	if data["sleephour"] == nil {
 		println("몇 시에 자는지 알려주세요. 예시: 12시 = 12") 
 		_, _ = fmt.Scan(&sleephour)
@@ -66,6 +70,11 @@ func main() {
 		println("자는 시간이 오전인지 오후인지 알려주세요. 예시: 오전 = true")
 		_, _ = fmt.Scan(&sleepam)
 		data["sleepam"] = sleepam
+	}
+	if data["sleeprepeat"] == nil {
+		println("알람 소리가 몇 번 반복될지 알려주세요. (잘 때) 예시: 3번 = 3")
+		_, _ = fmt.Scan(&sleeprepeat)
+		data["sleeprepeat"] = sleeprepeat
 	}
 	if data["dayhour"] == nil {
 		println("몇 시에 일어나는지 알려주세요. 예시: 12시 = 12") 
@@ -82,12 +91,20 @@ func main() {
 		_, _ = fmt.Scan(&dayam)
 		data["dayam"] = dayam
 	}
+	if data["dayrepeat"] == nil {
+		println("알람 소리가 몇 번 반복될지 알려주세요. (일어날 때) 예시: 3번 = 3")
+		_, _ = fmt.Scan(&dayrepeat)
+		data["dayrepeat"] = dayrepeat
+	}
 	sleephour, _ = data["sleephour"].(int)
 	sleepmin, _ = data["sleepmin"].(int)
 	sleepam, _ = data["sleepam"].(bool)
+	sleeprepeat, _ = data["sleeprepeat"].(int)
 	dayhour, _ = data["dayhour"].(int)
 	daymin, _ = data["daymin"].(int)
 	dayam, _ = data["dayam"].(bool)
+	dayrepeat, _ = data["dayrepeat"].(int)
+
 	jsoncontent, _ := json.MarshalIndent(data, "", "  ")
 	os.WriteFile("config.json", jsoncontent, 0644)
 
@@ -98,14 +115,26 @@ func main() {
 	if err != nil { log.Fatal(err) }
 	goodnightstreamer, goodnightformat, err := mp3.Decode(goodnightfile)
 	if err != nil { log.Fatal(err)}
+	goodnightbuffer := beep.NewBuffer(goodnightformat)
+	goodnightbuffer.Append(goodnightstreamer)
 	defer goodnightstreamer.Close()
-	/*
 	gooddayfile, gooddayfileerror := os.Open("./sounds/goodday.mp3")
 	if gooddayfileerror != nil { log.Fatal(gooddayfileerror) }
 	gooddaystreamer, gooddayformat, gooddayerror := mp3.Decode(gooddayfile)
 	if gooddayerror != nil { log.Fatal(gooddayerror) }
+	gooddaybuffer := beep.NewBuffer(gooddayformat)
+	gooddaybuffer.Append(gooddaystreamer)
 	defer gooddaystreamer.Close()
-	*/
+	goodnightfileanother, _ := os.Open("./sounds/goodnight.mp3")
+	gooddayfileanother, _ := os.Open("./sounds/goodday.mp3")
+	d, err := gomp3.NewDecoder(goodnightfileanother)
+	if err != nil { log.Fatal(err) }
+	samples := d.Length() / sampleSize
+	goodnightlength := samples / int64(d.SampleRate())
+	d, err = gomp3.NewDecoder(gooddayfileanother)
+	if err != nil { log.Fatal(err) }
+	samples = d.Length() / sampleSize
+	gooddaylength := samples / int64(d.SampleRate())
 
 	speaker.Init(goodnightformat.SampleRate, goodnightformat.SampleRate.N(time.Second/10))
 
@@ -115,20 +144,25 @@ func main() {
 		nowtime := time.Now()
 		println("현재 시간: " + nowtime.Format("15:04:05"))
 		if sleeptime.check_time(nowtime) {
-			err := beeep.Notify("Good Night", fmt.Sprint("잘 자요.", strconv.Itoa(nowtime.Hour()), strconv.Itoa(nowtime.Minute()), strconv.Itoa(nowtime.Second())), "assets/doxa.png")
+			err := beeep.Notify("Good Night", "잘 자요.", "assets/doxa.png")
 			if err != nil {
 				panic(err)
 			}
-			speaker.Play(goodnightstreamer)
+			for i := 1; i <= sleeprepeat; i++ {
+				goodnightsound := goodnightbuffer.Streamer(0, goodnightbuffer.Len())
+				speaker.Play(goodnightsound)
+				time.Sleep(time.Duration(second_to_nano(goodnightlength)))
+			}
 		} else if daytime.check_time(nowtime) {
-			fmt.Println("get up")
-			/* 
-			speaker.Play(gooddaystreamer) 
-			err := beeep.Notify("Wake up!", fmt.Sprint("일어나!", strconv.Itoa(nowtime.Hour()), strconv.Itoa(nowtime.Minute()), strconv.Itoa(nowtime.Second())), "assets/sherry.png")
+			err := beeep.Notify("Wake up!", "일어나!", "assets/sherry.png")
 			if err != nil {
 				panic(err)
 			}
-			*/
+			for i := 1; i <= dayrepeat; i++ {
+				gooddaysound := gooddaybuffer.Streamer(0, gooddaybuffer.Len())
+				speaker.Play(gooddaysound)
+				time.Sleep(time.Duration(second_to_nano(gooddaylength)))
+			}
 		}
 		time.Sleep(time.Duration(second_to_nano(1)))
 	}
