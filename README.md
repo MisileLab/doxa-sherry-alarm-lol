@@ -4,11 +4,18 @@
 
 ## 설치
 
-[윈도우](https://nightly.link/MisileLab/doxa-sherry-alarm-lol/workflows/build-windows/main/build-artifacts.zip)
-
 [MacOS](https://nightly.link/MisileLab/doxa-sherry-alarm-lol/workflows/build-macos/main/build-artifacts.zip)
 
-[리눅스](https://nightly.link/MisileLab/doxa-sherry-alarm-lol/workflows/build/main/build-artifacts.zip)
+### 윈도우
+
+1. [여기서](https://nightly.link/MisileLab/doxa-sherry-alarm-lol/workflows/build-windows/main/build-artifacts.zip) 다운로드해주세요.
+2. **한번 실행해주세요.**
+
+### 리눅스
+
+1. [여기서](https://nightly.link/MisileLab/doxa-sherry-alarm-lol/workflows/build/main/build-artifacts.zip) 다운로드해주세요.
+2. **한번 실행해주세요.**
+3. install-linux.sh를 sudo 권한이 있는 상태로 해주세요.
 
 ## 프로그램 설정 초기화
 
