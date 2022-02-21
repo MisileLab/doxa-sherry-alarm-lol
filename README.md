@@ -10,12 +10,23 @@
 
 1. [여기서](https://nightly.link/MisileLab/doxa-sherry-alarm-lol/workflows/build-windows/main/build-artifacts.zip) 다운로드해주세요.
 2. **한번 실행해주세요.**
+3. install-windows.bat를 관리자 권한으로 실행시켜주세요.
 
 ### 리눅스
 
 1. [여기서](https://nightly.link/MisileLab/doxa-sherry-alarm-lol/workflows/build/main/build-artifacts.zip) 다운로드해주세요.
 2. **한번 실행해주세요.**
-3. install-linux.sh를 sudo 권한이 있는 상태로 해주세요.
+3. install-linux.sh를 sudo 권한이 있는 상태로 실행시켜주세요.
+
+## 삭제
+
+### 윈도우
+
+delete-windows.bat를 관리자 권한이 있는 상태로 실행시켜주세요.
+
+### 리눅스
+
+delete-linux.sh를 관리자 권한이 있는 상태로 실행시켜주세요.
 
 ## 프로그램 설정 초기화
 
