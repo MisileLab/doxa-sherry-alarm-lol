@@ -22,7 +22,7 @@ jobs:
           filename: 'release.zip'
           exclusions: '.gitignore, *.go, *.mod, *.sum, LICENSE.md, README.md, /*.github/*'
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
           path: release.zip
