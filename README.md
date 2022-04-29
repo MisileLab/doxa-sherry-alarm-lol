@@ -1,3 +1,6 @@
+# 주의! 이 프로젝트는 개발 중지되었습니다.
+대신 [이 프로젝트](https://github.com/misilelab/doxa-sherry-alarm)을 사용해주세요.
+
 # Doxa-Sherry-Alarm
 
 [독사](https://www.twitch.tv/doxa_97)와 [쉐리](https://www.twitch.tv/20_sherry_02)의 음성으로 만들어진 엄청난 알람
